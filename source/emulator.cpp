@@ -1,4 +1,4 @@
-#include "emulator.h"
+#include "../headers/emulator.h"
 #include <clara/clara.hpp> // Include the Clara header
 
 namespace CLIEmulator {
