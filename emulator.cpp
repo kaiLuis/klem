@@ -8,12 +8,14 @@ namespace CLIEmulator {
     }
 
     void Emulator::setupOptions(clara::Parser& parser) {
-        parser |= clara::Opt(emulatorType, "emulatorType")
-        ["--type"]("Specify the emulator type").required();
-        parser |= clara::Opt(emulatorOptions, "emulatorOptions")
-        ["--option"]("Specify emulator options");
-        // Add more options
-    }
+    // Define command-line options for the Emulator
+    parser |= clara::Opt(emulatorType, "emulatorType")
+               ["--type"]("Specify the emulator type").required();
+    parser |= clara::Opt(emulatorOptions, "emulatorOptions")
+               ["--option"]("Specify emulator options");
+    // TODO: Add more options if needed
+}
+
 
     void Emulator::startEmulation() {
         // Validate options and start emulation
