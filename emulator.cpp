@@ -6,6 +6,7 @@ namespace CLIEmulator {
     Emulator::Emulator() {
         // Set up options in setupOptions()
     }
+    //hello
 
     void Emulator::setupOptions(CLI::App& app) {
         // Define command-line options for the Emulator
