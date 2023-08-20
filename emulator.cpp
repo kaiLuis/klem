@@ -1,5 +1,5 @@
 #include "emulator.h"
-#include <clara/clara.hpp> // Include the Clara header
+#include "CLI11.hpp" // Include the CLI11 header
 
 namespace CLIEmulator {
 
@@ -7,15 +7,12 @@ namespace CLIEmulator {
         // Set up options in setupOptions()
     }
 
-    void Emulator::setupOptions(clara::Parser& parser) {
-    // Define command-line options for the Emulator
-    parser |= clara::Opt(emulatorType, "emulatorType")
-               ["--type"]("Specify the emulator type").required();
-    parser |= clara::Opt(emulatorOptions, "emulatorOptions")
-               ["--option"]("Specify emulator options");
-    // TODO: Add more options if needed
-}
-
+    void Emulator::setupOptions(CLI::App& app) {
+        // Define command-line options for the Emulator
+        app.add_option("--type", emulatorType, "Specify the emulator type")->required();
+        app.add_option("--option", emulatorOptions, "Specify emulator options");
+        // TODO: Add more options if needed
+    }
 
     void Emulator::startEmulation() {
         // Validate options and start emulation
