@@ -1,5 +1,5 @@
 #include "emulator.h"
-#include "CLI11.hpp" // Include the CLI11 header
+#include "CLI11/include/CLI/CLI.hpp" // Include the CLI11 header (Change for your system
 
 namespace CLIEmulator {
 

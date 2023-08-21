@@ -2,9 +2,9 @@
 #include <cstdlib> // for std::exit
 #include <stdexcept> // for std::runtime_error
 #include <string>
-#include "Emulator.h" // assuming you have a separate Emulator class
-#include "CLI11.hpp" // Include the CLI11 library for command line parsing
-#include "cmake-build-debug/_deps/cli11-src/include/CLI/App.hpp"
+#include "emulator.h" // assuming you have a separate Emulator class
+#include "CLI11/include/CLI/CLI.hpp" // Include the CLI11 library for command line parsing
+
 #include <csignal> // for signal handling
 #include <fstream> // for file operations
 #include <filesystem> // for file system operations
