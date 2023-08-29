@@ -1,30 +1,75 @@
 #include "emulator.h"
-#include "CLI11.hpp" // Include the CLI11 header
+#include <iostream>
+#include <csignal>
+#include "cxxopts/include/cxxopts.hpp" //fix for you
 
 namespace CLIEmulator {
 
-    Emulator::Emulator() {
-        // Set up options in setupOptions()
-    }
-    //hello
-
-    void Emulator::setupOptions(CLI::App& app) {
-        // Define command-line options for the Emulator
-        app.add_option("--type", emulatorType, "Specify the emulator type")->required();
-        app.add_option("--option", emulatorOptions, "Specify emulator options");
-        // TODO: Add more options if needed
-    }
-
-    void Emulator::startEmulation() {
-        // Validate options and start emulation
-        if (emulatorType == "type1") {
-            // Start type 1 emulation
-        } else if (emulatorType == "type2") {
-            // Start type 2 emulation
-        } else {
-            throw std::invalid_argument("Unsupported emulator type.");
+    Emulator::Emulator(int argc, char* argv[]) : argc(argc), argv(argv) {
+        // Initialize the emulator
+        if (!ParseCommandLineOptions() || !ValidateOptions()) {
+            throw std::invalid_argument("Invalid command line options.");
         }
-        // Add more validation and start logic
+
+        // Set Ctrl+C signal handler
+        std::signal(SIGINT, SignalHandler);
+
+        // Perform additional initialization here if needed
+        // ...
     }
 
+    bool Emulator::Run() {
+        try {
+            // Run the emulator logic
+            // ...
+
+            return true;
+        } catch (const std::exception& e) {
+            // Exception handling
+            std::cerr << "Error running the emulator: " << e.what() << std::endl;
+            return false;
+        }
+    }
+
+    void Emulator::SetupOptions(cxxopts::Options& app) {
+        // Customize your command-line options using cxxopts
+        app.add_options()
+                ("h,help", "Show CLI help")
+            // Add other options here
+                ;
+    }
+
+    bool Emulator::ParseCommandLineOptions() {
+        try {
+            cxxopts::Options app("My Emulator", "My Emulator");
+            SetupOptions(app);
+
+            auto result = app.parse(argc, argv);
+
+            if (result.count("help")) {
+                std::cout << app.help() << std::endl;
+                return false;
+            }
+
+            // Extract and store options
+            // ...
+
+            return true;
+        } catch (const cxxopts::OptionParseException& e) {
+            std::cerr << "Error parsing command line options: " << e.what() << std::endl;
+            return false;
+        }
+    }
+
+    bool Emulator::ValidateOptions() {
+        // Validate the parsed options
+        // ...
+
+        return true;
+    }
+
+    void Emulator::SignalHandler(int signal) {
+        // Handle the signal (e.g., cleanup or other actions)
+        // ...
+    }
 } // namespace CLIEmulator

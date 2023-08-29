@@ -1,23 +1,30 @@
 #pragma once
+
 #include <string>
-#include <vector>
-#include <stdexcept> // Include this for std::exception
-//hello
-namespace CLI {
-    class App;
+#include <memory>
+
+namespace cxxopts {
+    class Options;
 }
 
 namespace CLIEmulator {
 
     class Emulator {
     public:
-        Emulator();
-        void setupOptions(CLI::App& app);
-        void startEmulation(); // Fix function name
+        Emulator(int argc, char* argv[]);
+        bool Run();
 
     private:
+        bool ParseCommandLineOptions();
+        bool ValidateOptions();
+        void SetupOptions(cxxopts::Options& app);
+
+        static void SignalHandler(int signal);
+
         std::string emulatorType;
-        std::vector<std::string> emulatorOptions;
+        std::string emulatorOptions;
+        int argc;
+        char** argv;
     };
 
 } // namespace CLIEmulator

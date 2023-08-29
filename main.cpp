@@ -1,62 +1,75 @@
+#include "emulator.h"
 #include <iostream>
-#include <cstdlib> // for std::exit
-#include <stdexcept> // for std::runtime_error
-#include <string>
-#include "Emulator.h" // assuming you have a separate Emulator class
-#include "CLI11.hpp" // Include the CLI11 library for command line parsing
-#include "cmake-build-debug/_deps/cli11-src/include/CLI/App.hpp"
-#include <csignal> // for signal handling
-#include <fstream> // for file operations
-#include <filesystem> // for file system operations
-#include <vector>
-//please dont be missing the include files Mr.Push
-// Global flag to handle Ctrl+C signal
-volatile std::sig_atomic_t g_interrupted = false;
+#include <csignal>
+#include "cxxopts/include/cxxopts.hpp" //change for you.
 
-// Function to handle Ctrl+C signal
-void SignalHandler(int signum) {
-    if (signum == SIGINT) {
-        g_interrupted = true;
-    }
-}
+namespace CLIEmulator {
 
-int main(int argc, char* argv[]) {
-    try {
-        // Display the welcome message
-        std::cout << "Welcome to Klem" << std::endl;
-
-        // Initialize CLI11
-        CLI::App app{"My Emulator"};
-
-        // Add a help flag to display CLI11's built-in help
-        app.set_help_flag("--help", "Show CLI help");
-
-        // Create a CommandLineOptions instance and add options
-        CommandLineOptions cliOptions;
-        cliOptions.AddOptions(app);
-
-        // ... Continue with the rest of the code ...
-
-        CLI11_PARSE(app, argc, argv);
+    Emulator::Emulator(int argc, char* argv[]) : argc(argc), argv(argv) {
+        // Initialize the emulator
+        if (!ParseCommandLineOptions() || !ValidateOptions()) {
+            throw std::invalid_argument("Invalid command line options.");
+        }
 
         // Set Ctrl+C signal handler
         std::signal(SIGINT, SignalHandler);
 
-        // Check if the user requested help
-        if (argc < 2 || app.count("--help") > 0) {
-            ShowHelp();
-            return 0; // Return 0 to indicate success
-        }
-
-        CLIEmulator::Emulator emulator;
-
-        // ... Continue with the rest of the code ...
-
-        // Return 0 for success
-        return 0;
-    } catch (const std::exception& e) {
-        // ... Exception handling ...
-    } catch (...) {
-        // ... Exception handling ...
+        // Perform additional initialization here if needed
+        // ...
     }
-}
+
+    bool Emulator::Run() {
+        try {
+            // Run the emulator logic
+            // ...
+
+            return true;
+        } catch (const std::exception& e) {
+            // Exception handling
+            std::cerr << "Error running the emulator: " << e.what() << std::endl;
+            return false;
+        }
+    }
+
+    void Emulator::SetupOptions(cxxopts::Options& app) {
+        // Customize your command-line options using cxxopts
+        app.add_options()
+                ("h,help", "Show CLI help")
+            // Add other options here
+                ;
+    }
+
+    bool Emulator::ParseCommandLineOptions() {
+        try {
+            cxxopts::Options app("My Emulator", "My Emulator");
+            SetupOptions(app);
+
+            auto result = app.parse(argc, argv);
+
+            if (result.count("help")) {
+                std::cout << app.help() << std::endl;
+                return false;
+            }
+
+            // Extract and store options
+            // ...
+
+            return true;
+        } catch (const cxxopts::OptionParseException& e) {
+            std::cerr << "Error parsing command line options: " << e.what() << std::endl;
+            return false;
+        }
+    }
+
+    bool Emulator::ValidateOptions() {
+        // Validate the parsed options
+        // ...
+
+        return true;
+    }
+
+    void Emulator::SignalHandler(int signal) {
+        // Handle the signal (e.g., cleanup or other actions)
+        // ...
+    }
+} // namespace CLIEmulator
